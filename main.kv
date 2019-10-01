@@ -1,29 +1,134 @@
 <MainScreen>:
     name: 'main'
+    counter: counter
     FloatLayout:
         size_hint: None, None
+
+    Button:
+        id: toggle_button
+        text: "On" if toggle_button.state == "down" else "Off"
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 60
+        pos_hint: {"x":.8, "top":.2}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+
+    Button:
+        id: counter
+        text: "0"
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 60
+        pos_hint: {"x":0, "top":.2}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+        on_release: root.counter_button()
+
+    Button:
+        id: change_other
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        pos_hint: {"x":.4, "top":.2}
+        size_hint: 0.2,0.2
+
+    Button:
+        id: other_button
+        text: "motor on" if change_other.state=="down" else "motor off"
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 40
+        pos_hint: {"x":.4, "top":1}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+
+    BoxLayout:
+        Slider:
+            id: slider
+            size_hint: 0.3,0.3
+            pos_hint: {"x":.4, "top":.65}
+            min: 0
+            max: 100
+            step: 1
+
+        Label:
+            text: str(slider.value)
+            size: 100,100
+            background_color: (0, 0, 0, 1.0)
+            font_name: 'Roboto-Bold'
+            text_size: self.size
+            outline_width: 5
+            outline_color: (1,1,1,1)
+            halign: 'center'
+            valign: 'middle'
+            font_size: 40
+            pos_hint: {"x":.2, "top":.6}
+            size_hint: 0.2,0.2
+            color: 0,0,1,1
 
     DPEAButton:
         id: test_button
         text: 'test'
         size: 100, 100
-        x: root.width * 0.75
-        y: root.height * 0.5
+        x: root.width * 0.67
+        y: root.height * 0.25
         color: 0, 1, 0, 1
         on_press: root.pressed()
 
     DPEAButton:
         text: "test2"
         size: 100, 100
-        x: root.width * 0.25
-        y:root.height * 0.5
+        x: root.width * 0.2
+        y:root.height * 0.25
         color: 1, 0, 0, 1
         on_press: root.pressed()
 
     ImageButton:
-        id: logo_image_button
+        id: image_button
         source: "../../pidev/kivy/images/DPEALogoTransparent.png"
         size: 100, 100
-        x: root.width * 0.5
-        y: root.height * 0.5
-        on_press: root.pressed()
+        x: root.width * 0.45
+        y: root.height * 0.25
+        on_press: root.clicked()
+
+    ImageButton:
+        id: animation_button
+        source: "../../pidev/kivy/images/DPEALogoTransparent.png"
+        size: 100, 100
+        x: root.width * 0.45
+        y: root.height * 0.55
+        on_press: root.animation()
+
+    Label:
+        id: joystick_label
+        text: str(root.get_button_state())
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 40
+        pos_hint: {"x":.2 , "top":1}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
