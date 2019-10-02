@@ -31,7 +31,7 @@ class Joystick:
         Get the axis (x or y) of the joystick.
         :raises: ValueError If the given axis isn't 'x' 'y'
         :param axis: axis to get value of
-                :rtype: float
+        :rtype: float
         :return: All the way to the right=1, fully up=-1
         """
         axis.lower()
@@ -63,33 +63,6 @@ class Joystick:
     def get_button_state(self, button_num):
         """
         Get the state of a button. This project uses the "Logitech Attack 3" which contains 11 physical buttons but are
-        indexed 0-10
-        :param button_num: Button number to get the state of
-        :raises: ValueError if the given button number is not in the range of available buttons
-        :rtype: int
-        :return: 0 or 1 (1=button depressed)
-        """
-        self.refresh()
-
-        if button_num not in range(self.num_buttons):
-            raise ValueError("The button number given is not a button on the joystick, "
-                             "must be in range (0-%s)" % self.num_buttons)
-        else:
-            return self.joystick.get_button(button_num)
-
-    def button_combo_check(self, buttons):
-        """
-        Check to see if the given button numbers are all being pressed
-        :param buttons: List of buttons to check
-        :rtype: bool
-        :return: True if ALL of the buttons are being pressed, false otherwise
-        """
-        self.refresh()
-
-        for button in buttons:
-            if not self.get_button_state(button):
-                return False
-        return True
         indexed 0-10
         :param button_num: Button number to get the state of
         :raises: ValueError if the given button number is not in the range of available buttons

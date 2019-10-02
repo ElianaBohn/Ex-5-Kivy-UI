@@ -8,19 +8,25 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.slider import Slider
 from kivy.animation import Animation, AnimationTransition
+from threading import Thread
+from time import sleep
+
 from pidev.MixPanel import MixPanel
 from pidev.kivy.PassCodeScreen import PassCodeScreen
-from pidev.kivy.PauseScreen import PauseScreen
+import pidev.kivy.PauseScreen
 from pidev.kivy import DPEAButton
 from pidev.kivy import ImageButton
+from pidev.Joystick import Joystick
 
 MIXPANEL_TOKEN = "x"
 MIXPANEL = MixPanel("Project Name", MIXPANEL_TOKEN)
+joystick = Joystick(0, False)
 
 SCREEN_MANAGER = ScreenManager()
 MAIN_SCREEN_NAME = 'main'
 ADMIN_SCREEN_NAME = 'admin'
 IMAGE_SCREEN_NAME = 'image'
+
 class ProjectNameGUI(App):
     """
     Class to handle running the GUI Application
@@ -42,7 +48,11 @@ class MainScreen(Screen):
     """
     counter = ObjectProperty(None)
     global x_value
-    x_value = 0
+    x_value =  0
+
+    joy_x_val = ObjectProperty(None)
+    joy_y_val = ObjectProperty(None)
+    button_state = ObjectProperty(None)
 
     def counter_button(self):
         global x_value
@@ -53,7 +63,7 @@ class MainScreen(Screen):
         Function called on button touch event for button with id: testButton
         :return: None
         """
-        PauseScreen.pause(pause_scene_name='pauseScene', transition_back_scene='main', text="Test", pause_duration=5)
+        pidev.kivy.PauseScreen.PauseScreen.pause(pause_scene_name='pauseScene', transition_back_scene='main', text="Test", pause_duration=5)
     def clicked(self):
 
         SCREEN_MANAGER.current = 'image'
@@ -69,6 +79,20 @@ class MainScreen(Screen):
         anim = Animation(x=50) + Animation(size=(0, 0), duration=1.)
         anim.start(self.ids.animation_button)
 
+    def joy_update(self):  # This should be inside the MainScreen Class
+        while True:
+            self.joy_x_val = joystick.get_axis('x')
+         #   self.ids.joy_label_x.x = (self.joy_x_val)
+        #    self.ids.joy_label_y.y = (self.joy_y_val)
+            self.joy_y_val = joystick.get_axis('y')
+            self.button_state = joystick.get_button_state(0)
+           # print("x= ", self.joy_x_val)
+           # print("y= ", self.joy_y_val)
+            print("button= ", str(self.button_state))
+            sleep(.1)
+
+    def start_joy_thread(self):  # This should be inside the MainScreen Class
+        Thread(target=self.joy_update).start()
 
 class AdminScreen(Screen):
     """
@@ -137,7 +161,7 @@ class ImageScreen(Screen):
 Builder.load_file('main.kv')
 SCREEN_MANAGER.add_widget(MainScreen(name=MAIN_SCREEN_NAME))
 SCREEN_MANAGER.add_widget(PassCodeScreen(name='passCode'))
-SCREEN_MANAGER.add_widget(PauseScreen(name='pauseScene'))
+SCREEN_MANAGER.add_widget(pidev.kivy.PauseScreen.PauseScreen(name='pauseScene'))
 SCREEN_MANAGER.add_widget(AdminScreen(name=ADMIN_SCREEN_NAME))
 SCREEN_MANAGER.add_widget(ImageScreen(name=IMAGE_SCREEN_NAME))
 """

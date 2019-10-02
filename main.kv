@@ -1,6 +1,7 @@
 <MainScreen>:
     name: 'main'
     counter: counter
+    on_enter:root.start_joy_thread()
     FloatLayout:
         size_hint: None, None
 
@@ -118,8 +119,8 @@
         on_press: root.animation()
 
     Label:
-        id: joystick_label
-        text: str(root.get_button_state())
+        id: joy_label_button
+        text: "button= "+ str(root.button_state)
         size: 100,100
         background_color: (0, 0, 0, 1.0)
         font_name: 'Roboto-Bold'
@@ -129,6 +130,44 @@
         halign: 'center'
         valign: 'middle'
         font_size: 40
-        pos_hint: {"x":.2 , "top":1}
+        pos_hint: {"x":.15 , "top":.95}
         size_hint: 0.2,0.2
         color: 0,0,1,1
+     #   x: root.width * .25
+      #  y: root.height * .6
+
+    Label:
+        id: joy_label_x
+        text: "x= "+ str(root.joy_x_val)
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 40
+        pos_hint: {"x":.15 , "top":.85}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+     #   x: root.width * .25
+      #  y: root.height * .8
+
+    Label:
+        id: joy_label_y
+        text: "y= "+ str(root.joy_y_val)
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 40
+        pos_hint: {"x":.15 , "top":.7}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+      #  x: root.width * .75
+      #  y: root.height * .7
